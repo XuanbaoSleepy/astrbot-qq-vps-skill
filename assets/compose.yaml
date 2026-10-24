@@ -1,0 +1,43 @@
+name: ${COMPOSE_PROJECT_NAME:?set project name}
+services:
+  napcat:
+    image: ${NAPCAT_IMAGE:?set verified image digest}
+    container_name: ${NAPCAT_CONTAINER:?set unique name}
+    restart: unless-stopped
+    environment:
+      NAPCAT_UID: ${NAPCAT_UID:?set UID}
+      NAPCAT_GID: ${NAPCAT_GID:?set GID}
+      MODE: astrbot
+      ACCOUNT: ${QQ_ACCOUNT:?set user-confirmed account}
+    ports:
+      - "127.0.0.1:${NAPCAT_WEBUI_PORT:?set free port}:6099"
+      - "127.0.0.1:${ONEBOT_HTTP_PORT:?set free port}:3000"
+    volumes:
+      - ./data:/AstrBot/data
+      - ./napcat/config:/app/napcat/config
+      - ./ntqq:/app/.config/QQ
+    networks: [bot]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+  astrbot:
+    image: ${ASTRBOT_IMAGE:?set verified image digest}
+    container_name: ${ASTRBOT_CONTAINER:?set unique name}
+    restart: unless-stopped
+    environment:
+      TZ: ${BOT_TIMEZONE:-Asia/Shanghai}
+    ports:
+      - "127.0.0.1:${ASTRBOT_WEBUI_PORT:?set free port}:6185"
+    volumes:
+      - ./data:/AstrBot/data
+    networks: [bot]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+networks:
+  bot:
+    driver: bridge

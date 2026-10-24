@@ -1,0 +1,24 @@
+[Unit]
+Description=Cloudflare Tunnel for private QQBot management origins
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=notify
+DynamicUser=yes
+StateDirectory=@TUNNEL_STATE_NAME@
+LoadCredential=tunnel-token:@TUNNEL_TOKEN_FILE@
+Environment=HOME=/var/lib/@TUNNEL_STATE_NAME@
+ExecStart=@CLOUDFLARED_BIN@ tunnel run --token-file %d/tunnel-token
+Restart=always
+RestartSec=5s
+TimeoutStartSec=90s
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

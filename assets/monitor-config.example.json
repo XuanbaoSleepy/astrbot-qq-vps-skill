@@ -1,0 +1,13 @@
+{
+  "http_url": "http://127.0.0.1:REPLACE_HTTP_PORT",
+  "token_file": "REPLACE_ONEBOT_TOKEN_FILE",
+  "qq_user_id": "REPLACE_USER_CONFIRMED_ACCOUNT",
+  "active_user_probe": true,
+  "gateway_type": "napcat",
+  "gateway_container": "REPLACE_GATEWAY_CONTAINER",
+  "astrbot_container": "REPLACE_ASTRBOT_CONTAINER",
+  "onebot_ws_port": "REPLACE_WS_PORT",
+  "resend_api_key_file": "REPLACE_RESEND_KEY_FILE",
+  "resend_from": "REPLACE_VERIFIED_SENDER",
+  "resend_to": "REPLACE_RECIPIENT"
+}

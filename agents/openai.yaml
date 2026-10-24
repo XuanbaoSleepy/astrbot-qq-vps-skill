@@ -1,0 +1,4 @@
+interface:
+  display_name: "NapCat / SnowLuma + AstrBot VPS"
+  short_description: "部署 NapCat 或 SnowLuma QQBot，先确认可选域名入口与掉线邮件"
+  default_prompt: "使用 $astrbot-napcat-vps 确认网关、域名与邮件需求及前置条件，再检测 VPS，完成所选范围的部署和验收。"

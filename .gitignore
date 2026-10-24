@@ -1,0 +1,41 @@
+# Runtime secrets; keep the intentionally empty templates.
+.env
+.env.*
+!.env.example
+!.env.snowluma.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+
+# Actual instance state, logs, archives and login data do not belong here.
+data/
+ntqq/
+napcat/
+snowluma/
+backups/
+deployments/
+skill-backups/
+*.log
+*.sqlite*
+*.db
+*.zip
+*.tar
+*.tar.gz
+monitor.json
+monitor-config.json
+state.json
+*api-key*
+*token-file*
+
+# Local validation/editor output.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.validation-temp/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

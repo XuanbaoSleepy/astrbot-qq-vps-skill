@@ -1,0 +1,54 @@
+name: ${COMPOSE_PROJECT_NAME:?set project name}
+services:
+  snowluma:
+    image: ${SNOWLUMA_IMAGE:?set verified image digest}
+    container_name: ${SNOWLUMA_CONTAINER:?set unique name}
+    restart: unless-stopped
+    shm_size: 1gb
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 1048576
+    cap_add: [SYS_PTRACE]
+    security_opt: [seccomp=unconfined]
+    environment:
+      TZ: ${BOT_TIMEZONE:-Asia/Shanghai}
+      SNOWLUMA_UID: ${SNOWLUMA_UID:?set UID}
+      SNOWLUMA_GID: ${SNOWLUMA_GID:?set GID}
+      SNOWLUMA_ONEBOT_HOST: 0.0.0.0
+      SNOWLUMA_WEBUI_HOST: 0.0.0.0
+      SNOWLUMA_WEBUI_PORT: "5099"
+      SNOWLUMA_HOOK_AUTOLOAD: "1"
+      SNOWLUMA_SCREEN: ${SNOWLUMA_SCREEN:-1280x800x24}
+      SNOWLUMA_QQ_FLAGS: --disable-gpu --disable-software-rasterizer --disable-gpu-compositing
+    ports:
+      - "127.0.0.1:${SNOWLUMA_WEBUI_PORT:?set free port}:5099"
+      - "127.0.0.1:${NOVNC_PORT:?set free port}:6081"
+      - "127.0.0.1:${ONEBOT_HTTP_PORT:?set free port}:3000"
+    volumes:
+      - ./snowluma/data:/app/data
+      - ./snowluma/qq-config:/app/.config
+      - ./snowluma/qq-share:/app/.local/share
+      - ./astrbot/data/temp:/AstrBot/data/temp:ro
+    networks: [bot]
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
+  astrbot:
+    image: ${ASTRBOT_IMAGE:?set verified image digest}
+    container_name: ${ASTRBOT_CONTAINER:?set unique name}
+    restart: unless-stopped
+    security_opt: [no-new-privileges:true]
+    environment:
+      TZ: ${BOT_TIMEZONE:-Asia/Shanghai}
+    ports:
+      - "127.0.0.1:${ASTRBOT_WEBUI_PORT:?set free port}:6185"
+    volumes:
+      - ./astrbot/data:/AstrBot/data
+    networks: [bot]
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
+networks:
+  bot:
+    driver: bridge

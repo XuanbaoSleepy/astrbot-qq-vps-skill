@@ -1,0 +1,14 @@
+[Unit]
+Description=Check QQ login and send Resend state-change alerts
+Wants=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+Environment="QQBOT_MONITOR_CONFIG=@MONITOR_CONFIG@"
+Environment="QQBOT_MONITOR_STATE=@MONITOR_STATE@"
+ExecStart=/usr/bin/flock -n @MONITOR_LOCK@ /usr/bin/python3 @DEPLOY_DIR@/bin/qq_monitor.py
+# Probe budget <= 69s + one mail request <= 10s, with startup/IO margin.
+TimeoutStartSec=180
